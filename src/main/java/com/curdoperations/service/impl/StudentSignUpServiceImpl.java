@@ -7,6 +7,7 @@ import com.curdoperations.repository.StudentSignUpRepository;
 import com.curdoperations.service.StudentSignUpService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,9 +21,14 @@ public class StudentSignUpServiceImpl implements StudentSignUpService {
 
     private final StudentSignUpRepository studentSignUpRepository;
 
+    private final BCryptPasswordEncoder passwordEncoder;
+
     @Override
     public StudentSignUpDto signUp(StudentSignUpDto signUpDto) {
         StudentSignUp studentSignUp = mapToEntity(signUpDto);
+
+        studentSignUp.setPassword(passwordEncoder.encode(signUpDto.getPassword()));
+
         StudentSignUp save = studentSignUpRepository.save(studentSignUp);
         return mapToDto(save);
     }

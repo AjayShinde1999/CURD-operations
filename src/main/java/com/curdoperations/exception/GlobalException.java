@@ -16,4 +16,11 @@ public class GlobalException {
         return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
 
     }
+
+    @ExceptionHandler(InvalidCredentialsException.class)
+    public ResponseEntity<ApiResponse> handleInvalidCredentialsException(InvalidCredentialsException exception){
+        String message = exception.getMessage();
+        ApiResponse response = new ApiResponse(message,false);
+        return new ResponseEntity<>(response,HttpStatus.BAD_REQUEST);
+    }
 }
